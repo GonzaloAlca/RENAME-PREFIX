@@ -1,0 +1,27 @@
+//Código para poder renombrar gran cantidad de archivos de forma automatizada sin eliminar el nombre original sino agregando un prefijo, el primero es como se haría insertando el Código directamente en el CMD, y el segundo es el código que se usaría para la creación de un archivo .BAT y poder realizar se ejecución de una forma más legible 
+
+En el CMD:
+
+for %F in (*.*) do ren "%F" "nuevo_nombre_%~nxF"
+
+
+PARA EL .BAT
+
+@echo off
+:: Verifica si se pasó un prefijo como argumento
+if "%1"=="" (
+    echo No se proporciono un prefijo.
+    set /p prefix=Por favor, escribe un prefijo: 
+) else (
+    set prefix=%1
+)
+
+:: Renombra los archivos en la carpeta actual, excluyendo el archivo .bat
+echo Renombrando archivos con el prefijo "%prefix%"
+for %%F in (*.*) do (
+    if /i not "%%~xF"==".bat" ren "%%F" "%prefix% %%~nxF"
+)
+
+:: Cierra automáticamente el CMD después de ejecutar
+exit
+
